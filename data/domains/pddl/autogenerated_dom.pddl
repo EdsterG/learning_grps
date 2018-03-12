@@ -1,0 +1,42 @@
+(define (domain sokoban)
+    (:requirements :strips :equality :typing)
+    (:types location)
+    (:predicates
+        (RobotAt ?loc - location)
+        (ObjAt ?loc - location)
+        (Adjacent ?l1 - location ?l2 - location)
+        (Adjacent_2 ?l1 - location ?l2 - location)
+    )
+    ;(:functions (total-cost) - number)
+    (:action move
+        :parameters (?l1 - location ?l2 - location)
+        :precondition (and
+                    (Adjacent ?l1 ?l2)
+                    (not (ObjAt ?l2))
+                    (RobotAt ?l1)
+        )
+        :effect (and
+                    (RobotAt ?l2)
+                    (not (RobotAt ?l1))
+                    ;(increase (total-cost) 1)
+        )
+    )
+    (:action push
+        :parameters (?r_loc - location ?l1 - location ?l2 - location)
+        :precondition (and
+                    (RobotAt ?r_loc)
+                    (ObjAt ?l1)
+                    (not (ObjAt ?l2))
+                    (Adjacent ?r_loc ?l1)
+                    (Adjacent ?l1 ?l2)
+                    (Adjacent_2 ?r_loc ?l2)
+        )
+        :effect (and
+                    (ObjAt ?l2)
+                    (not(ObjAt ?l1))
+                    (RobotAt ?l1)
+                    (not(RobotAt ?r_loc))
+                    ;(increase (total-cost) 2)
+        )
+    )
+)
